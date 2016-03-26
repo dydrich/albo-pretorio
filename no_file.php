@@ -2,15 +2,21 @@
 
 require_once "../rclasse/lib/start.php";
 
-$to = "webmaster@inrich.it";
+ini_set("display_errors", DISPLAY_ERRORS);
+
+check_session();
+
+$to = $from = $_SESSION['__config__']['admin_email'];
 $subject = "Errore albo";
-while(list($k, $v) = each($_SESSION['no_file'])){
-	$text .= "{$k}::{$v}\n";
-}
-$text .= "\n\nBrowser::{$_SERVER['HTTP_USER_AGENT']}\n";
+
+$text = "\n\nBrowser::{$_SERVER['HTTP_USER_AGENT']}\n";
 $text .= "Installazione::{$_SESSION['__config__']['intestazione_scuola']}, {$_SESSION['__config__']['indirizzo_scuola']}\n\n";
-$headers = "From: webmaster@inrich.it\r\n" .	"Reply-To: webmaster@inrich.it\r\n" .'X-Mailer: PHP/' . phpversion();
-mail($to, $subject, $text, $headers);
+while(list($k, $v) = each($_SESSION['no_file'])){
+    $text .= "{$k}::{$v}\n";
+}
+
+$headers = "From: {$from}\r\n" .	"Reply-To: {$to}\r\n" .'X-Mailer: PHP/' . phpversion();
+//mail($to, $subject, $text, $headers);
 
 $sel_cat = "SELECT id_categoria, codice, nome, descrizione FROM rb_categorie_docs WHERE tipo_documento = 7";
 $res_cat = $db->execute($sel_cat);
@@ -21,100 +27,101 @@ while($cat = $res_cat->fetch_assoc()){
 
 $mesi = array("", "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre");
 
+$year = $_SESSION['no_file']['year'];
+$month = $_SESSION['no_file']['month'];
+
 setlocale(LC_TIME, "it_IT");
+
+$drawer_label = "File non trovato";
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias. <?php if (isset($_REQUEST['month'])) echo "Archivio mese di ".$mesi[$_REQUEST['month']] ?>" />
-<meta name="keywords" content="Project Keywords" />
-<title>Albo pretorio</title>	
-<link href="css/style.css" rel="stylesheet" type="text/css" />			
-<!--[if IE]><link href="css/style-ie.css" rel="stylesheet" type="text/css" /><![endif]-->	
-<script type="text/javascript" src="../rclasse/js/prototype.js"></script>
-<script type="text/javascript" src="../rclasse/js/scriptaculous.js"></script>
-<script type="text/javascript" src="../rclasse/js/page.js"></script>
-<script type="text/javascript">
-
-</script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title><?php print $_SESSION['__config__']['intestazione_scuola'] ?>:: file non trovato</title>
+    <link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../rclasse/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../rclasse/css/general.css" type="text/css" media="screen,projection" />
+    <link href="../rclasse/css/site_themes/light_blue/reg.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../rclasse/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../rclasse/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="../rclasse/js/page.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            load_jalert();
+            setOverlayEvent()
+        });
+    </script>
 </head>
 <body>
-<div id="wrapper">
-	<div id="container">
-		<div id="header" class="clearfix">
-			<div id="logo">
-				<h1><a href="http://www.istitutoiglesiasserraperdosa.it" style="color: #898989">Istituto comprensivo C. Nivola</a></h1>
-				<p>Serra Perdosa, Iglesias</p>
-			</div>
-			<ul id="nav">
-				<li><a href="index.php">Home</a></li>
-				<?php if ($_SESSION['__user__'] && $_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM)): ?>
-				<li class="active"><a href="index.php?months=1">Riepilogo mensile</a></li>
-				<?php endif; ?>
-			</ul>
-		</div><!-- // end #header -->
-		<div id="banner">
-			<h1 class="page-title">Albo pretorio</h1>
-		</div><!-- // end #banner -->
-		<div id="main" class="clearfix">
-			<div id="content">
-				<p>
-					Il file <span style="color: red"><?php echo basename($_SESSION['no_file']['fn']) ?></span> da te richiesto non &egrave; presente nel server.<br /><br />
-					Il problema &egrave; stato segnalato all'amministratore del sito, e sar&agrave; risolto al pi&ugrave; presto.<br /><br />
-					Ti preghiamo di riprovare pi&ugrave; tardi e di scusare il disagio.
-			 	</p>
-			 	<p><a href="../..<?php echo $_SESSION['no_file']['relative'] ?>">Torna alla pagina precedente</a></p>
-			</div>
-			<div id="sidebar">
-				<div class="widget">
-					<h2>Categorie</h2>
-					<div class="contentarea">
-						<ul>
-						<?php 
-						foreach ($categorie as $cat){
-						?>
-							<li><a href="#" onclick="load(<?php echo $cat['id_categoria'] ?>, 'categoria',  false)" title="<?php echo utf8_encode($cat['descrizione']) ?>"><?php echo utf8_decode($cat['nome']) ?></a></li>
-						<?php } ?>	
-						</ul>
-					</div>
-				</div>
-				<div class="widget">
-					<h2>Archivio <?php echo date("Y") ?></h2>
-					<div class="contentarea">
-						<ul>
-					<?php 
-					$m = intval(date("m"));
-					while($m > 0){
-					?>
-							<li><a href="index.php?month=<?php echo $m ?>"><?php echo $mesi[$m] ?></a></li>
-					<?php 
-						$m--;
-					} 
-					?>
-							
-						</ul>
-					</div>
-				</div>
-			</div><!-- // end #sidebar -->
-		</div><!-- // end #main -->
-		<div id="footer">
-			<p>&copy; copyright 2013 <a href="http://www.istitutoiglesiasserraperdosa.it">Istituto comprensivo Sud Est, Iglesias</a> Tutti i diritti riservati </p>
-			
-			<!-- Please don't remove my backlink -->
-			<p>Free Web Design Templates by <a href="http://www.dkntemplates.com" title="Dkntemplates">Dkntemplates.com</a></p>
-			<!-- Please don't remove my backlink -->
-			
-		</div><!-- // end #footer -->
-	</div><!-- // end #container -->
-</div><!-- // end #wrapper -->
-<form method="post" id="search_form" action="index.php">
-	<input type="hidden" id="field" name="field" />
-	<input type="hidden" id="param" name="param" />
-	<input type="hidden" id="param_type" name="param_type" />
-</form>
-
-	
+<header id="header">
+    <div id="sc_firstrow">
+        <img src="<?php echo $_SESSION['__path_to_root__'] ?>css/site_themes/light_blue/images/icona_scuola.gif" style="width: 20px"/>
+        <span style="position: relative; bottom: 5px">Albo pretorio on line</span>
+    </div>
+    <div id="sc_secondrow">
+        <span style="margin-left: 5px"><?php print $_SESSION['__config__']['intestazione_scuola'] ?></span>
+    </div>
+</header>
+<nav id="navigation">
+    <div id="head_label">
+        <img src="<?php echo $_SESSION['__path_to_root__'] ?>images/ic_navigation_drawer3.png" id="open_drawer" style="float: left; position: relative; top: 18px" />
+        <p id="drawer_label" style="margin-top: 17px; vertical-align: top; margin-left: 10px; float: left; color: white"><?php echo $drawer_label ?></p>
+    </div>
+    <div class="nav_div" style="float: right; margin-right: 50px; position: relative; top: 20px; text-align: right">Albo pretorio on line</span></div>
+    <div class="nav_div" style="clear: both"></div>
+</nav>
+<div id="main">
+    <div id="right_col">
+        <div class="smallbox" id="working">
+            <p class="menu_label act_icon">Archivio <?php echo $year ?></p>
+            <ul class="menublock" style="" dir="rtl">
+                <?php
+                reset ($mesi);
+                foreach ($mesi as $k => $month){
+                    if ($k > 0){
+                        ?>
+                        <li><a href="archive.php?y=<?php echo $year ?>&m=<?php echo $k ?>"><?php echo $month ?></a></li>
+                        <?php
+                    }
+                }
+                ?>
+            </ul>
+        </div>
+    </div>
+    <div id="left_col">
+        <div class="welcome">
+            <p id="w_head" style="font-weight: bold">File non trovato</p>
+            <p class="w_text">
+                Il file <span class="attention"><?php if ($_SESSION['__user__']->getUsername() == 'rbachis' || $_SESSION['__user__']->getUsername() == 'admin' || isset($_SESSION['__sudoer__'])) echo $_SESSION['no_file']['file'] ?></span> da te richiesto non &egrave; presente nel server.<br /><br />
+                Il problema &egrave; stato segnalato all'amministratore del sito, e sar&agrave; risolto al pi&ugrave; presto.<br /><br />
+                Ti preghiamo di riprovare pi&ugrave; tardi e di scusare il disagio.
+            </p>
+            <p class="w_text">
+                <a href="../..<?php echo $_SESSION['no_file']['relative'] ?>">Torna alla pagina precedente</a>
+            </p>
+        </div>
+    </div>
+    <p class="spacer"></p>
+</div>
+<footer id="footer">
+    <span>Copyright <?php echo date("Y") ?> Riccardo Bachis | <a href="<?php print $_SESSION['__config__']['root_site'] ?>"><?php print $_SESSION['__config__']['intestazione_scuola'] ?></a></span>
+</footer>
+<div id="drawer" class="drawer" style="display: none; position: absolute">
+    <div style="width: 100%; height: 430px">
+        <div class="drawer_link"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>intranet/<?php echo $_SESSION['__mod_area__'] ?>/index.php"><img src="../../images/6.png" style="margin-right: 10px; position: relative; top: 5%" />Home</a></div>
+        <div class="drawer_link"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>intranet/<?php echo $_SESSION['__mod_area__'] ?>/profile.php"><img src="../../images/33.png" style="margin-right: 10px; position: relative; top: 5%" />Profilo</a></div>
+        <div class="drawer_link"><a href="index.php"><img src="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>images/11.png" style="margin-right: 10px; position: relative; top: 5%" />Documenti</a></div>
+        <?php if(is_installed("com")){ ?>
+            <div class="drawer_link"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>modules/communication/load_module.php?module=com&area=<?php echo $_SESSION['__mod_area__'] ?>"><img src="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>images/57.png" style="margin-right: 10px; position: relative; top: 5%" />Comunicazioni</a></div>
+        <?php } ?>
+    </div>
+    <?php if (isset($_SESSION['__sudoer__'])): ?>
+        <div class="drawer_lastlink"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>intranet/<?php echo $_SESSION['__mod_area__'] ?>/admin/sudo_manager.php?action=back"><img src="../../images/14.png" style="margin-right: 10px; position: relative; top: 5%" />DeSuDo</a></div>
+    <?php endif; ?>
+    <div class="drawer_lastlink"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>shared/do_logout.php"><img src="../../images/51.png" style="margin-right: 10px; position: relative; top: 5%" />Logout</a></div>
+</div>
 </body>
 </html>

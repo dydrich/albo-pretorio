@@ -1,131 +1,123 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias. <?php if (isset($_REQUEST['month'])) echo "Archivio mese di ".$mesi[$_REQUEST['month']] ?>" />
-<meta name="keywords" content="Project Keywords" />
-<title>Albo pretorio</title>	
-<link href="css/style.css" rel="stylesheet" type="text/css" />			
-<!--[if IE]><link href="css/style-ie.css" rel="stylesheet" type="text/css" /><![endif]-->	
-<link href="../rclasse/css/themes/default.css" rel="stylesheet" type="text/css"/>
-<link href="../rclasse/css/themes/mac_os_x.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="../rclasse/js/prototype.js"></script>
-<script type="text/javascript" src="../rclasse/js/scriptaculous.js"></script>
-<script type="text/javascript" src="../rclasse/js/window.js"></script>
-<script type="text/javascript" src="../rclasse/js/window_effects.js"></script>
-<script type="text/javascript" src="../rclasse/js/page.js"></script>
-<script type="text/javascript">
-function load(element, field, is_char){
-	if(element == 0){
-		document.location.href = "index.php";
-		return false;
-	}
-	$('field').value = field;
-	$('param').value = element;
-	if(is_char)
-		$('param_type').value = "char";
-	else
-		$('param_type').value = "num";
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias. <?php if (isset($_REQUEST['month'])) echo "Archivio mese di ".$mesi[$_REQUEST['month']] ?>" />
+    <meta name="keywords" content="Project Keywords" />
+    <title>Albo pretorio</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../rclasse/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../rclasse/css/general.css" type="text/css" media="screen,projection" />
+    <link href="../rclasse/css/site_themes/light_blue/reg.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../rclasse/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../rclasse/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="../rclasse/js/page.js"></script>
+    <script type="text/javascript">
+    function load(element, field, is_char){
+        if(element == 0){
+            document.location.href = "index.php";
+            return false;
+        }
+        $('#field').val(field);
+        $('#param').val(element);
+        if(is_char)
+            $('#param_type').val("char");
+        else
+            $('#param_type').val("num");
 
-	$('search_form').submit();
-}
+        $('#search_form').submit();
+    }
 
-function show_div(div, lnk){
-	/*
-	Effect.SlideUp(div, { duration: 1.0 });
-	for(var i = 0; i < divs.length; i++){
-		if((divs[i] != div) && ($(divs[i]).style.display !== "none")){
-			alert("Chiudo "+divs[i]);
-			Effect.BlindDown(divs[i], { duration: 1.0 });
-		}
-	}
-	*/
-	if($(div).style.display == "none"){
-		if(lnk.parentNode){
-			lnk.parentNode.setStyle({backgroundColor: 'rgba(216,223,209, .7)', padding: '10px', borderRadius: '5px', fontWeight: 'bold'});
-			lnk.setStyle({color: 'black'});
-		}
-		Effect.BlindDown(div, { duration: 1.0 });
-	}
-	else{
-		if(lnk.parentNode){
-			lnk.parentNode.setStyle({backgroundColor: '#EBF3FA'});
-			lnk.setStyle({color: ''});
-		}
-		Effect.SlideUp(div, { duration: 1.0 });
-	}
-}
-</script>
+    $(function(){
+        load_jalert();
+        setOverlayEvent();
+        $('#top_btn').click(function() {
+            $('html,body').animate({
+                scrollTop: 0
+            }, 700);
+            return false;
+        });
+
+        var amountScrolled = 200;
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > amountScrolled) {
+                $('#plus_btn').fadeOut('slow');
+                $('#float_btn').fadeIn('slow');
+                $('#top_btn').fadeIn('slow');
+            } else {
+                $('#float_btn').fadeOut('slow');
+                $('#plus_btn').fadeIn();
+                $('#top_btn').fadeOut('slow');
+            }
+        });
+    });
+    </script>
+    <style>
+        body {
+            color: #4b4b4b !important;;
+        }
+    </style>
 </head>
 <body>
-<div id="wrapper">
-	<div id="container">
-		<div id="header" class="clearfix">
-			<div id="logo">
-				<h1><a href="http://www.istitutoiglesiasserraperdosa.it" style="color: #898989">Istituto comprensivo C. Nivola</a></h1>
-				<p>Serra Perdosa, Iglesias</p>
-			</div>
-			<ul id="nav">
-				<li><a href="index.php">Home</a></li>
-				<?php if (isset($_SESSION['__user__']) && $_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM)): ?>
-				<li class="active"><a href="index.php?months=1">Riepilogo mensile</a></li>
-				<?php endif; ?>
-			</ul>
-		</div><!-- // end #header -->
-		<div id="banner">
-			<h1 class="page-title">Albo pretorio</h1>
-		</div><!-- // end #banner -->
-		<div id="main" class="clearfix">
-			<div id="content">
+<header id="header">
+    <div id="sc_firstrow">
+        <img src="<?php echo $_SESSION['__path_to_root__'] ?>css/site_themes/light_blue/images/icona_scuola.gif" style="width: 20px"/>
+        <span style="position: relative; bottom: 5px">Albo pretorio on line</span>
+    </div>
+    <div id="sc_secondrow">
+        <span style="margin-left: 5px"><?php print $_SESSION['__config__']['intestazione_scuola'] ?></span>
+    </div>
+</header>
+<nav id="navigation">
+    <div id="head_label">
+        <img src="<?php echo $_SESSION['__path_to_root__'] ?>images/ic_navigation_drawer3.png" id="open_drawer" style="float: left; position: relative; top: 18px" />
+        <p id="drawer_label" style="margin-top: 17px; vertical-align: top; margin-left: 10px; float: left; color: white"><?php echo $drawer_label ?></p>
+    </div>
+    <div class="nav_div" style="float: right; margin-right: 50px; position: relative; top: 20px; text-align: right">Albo pretorio on line</span></div>
+    <div class="nav_div" style="clear: both"></div>
+</nav>
+<div id="main">
+    <div id="right_col">
+        <div class="smallbox" id="working">
+            <p class="menu_label act_icon">Categorie</p>
+                <ul class="menublock" style="" dir="rtl">
+                    <li><a href="index.php">Tutte</a></li>
+                    <?php
+                    foreach ($categorie as $cat){
+                        ?>
+                        <li><a href="#" onclick="load(<?php echo $cat['id_categoria'] ?>, 'categoria',  false)" title="<?php echo $cat['descrizione'] ?>"><?php echo utf8_decode($cat['nome']) ?></a></li>
+                    <?php } ?>
+                </ul>
+            <p class="menu_label classbook_icon">Archivio</p>
+            <ul class="menublock" style="" dir="rtl">
+                <li><a href="index.php">Tutti</a></li>
+                <?php
+                $m = intval(date("m"));
+                while($m > 0){
+                    ?>
+                    <li><a href="index.php?month=<?php echo $m ?>"><?php echo $mesi[$m] ?></a></li>
+                    <?php
+                    $m--;
+                }
+                ?>
+            </ul>
+            <p class="menu_label gradebook_icon">Archivio anni precedenti</p>
+                <ul class="menublock" style="" dir="rtl">
+                    <?php
+                    foreach ($archive as $old_year){
+                        ?>
+                        <li><a href="archive.php?y=<?php echo $old_year ?>"><?php echo $old_year ?></a></li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+        </div>
+    </div>
+    <div id="left_col">
 				<?php
-if (isset($_REQUEST['months'])){
-	while(list($k, $anno) = each($data)){
-	?>
-	<p class="doc_type" style="">
-		<a href='#' onclick="show_div('anno<?php echo $k ?>', this)" style=''>
-			Anno <?php echo $k ?>
-		</a>
-	</p>
-	<div id="anno<?php echo $k ?>" style="display: none; background-color: rgba(228, 228, 228, 0.3); border-radius: 0px 0px 0px 0px; border: 1px solid rgba(216,223,209, 1); margin-top: 0px; padding-bottom: 20px">
-<?php 
-		/*
-		 * ciclo mesi
-		 */
-		while(list($mk, $month) = each($anno)){
-			$mese_str = strftime("%B", strtotime(date("Y-m-d"), mktime(0, 0, 0, intval($mk), 1, $k)));
-?>
-		<p class="mese" style="text-align: center">
-			<a href="#" onclick="show_div('anno<?php echo $k ?>_mese<?php echo $mk ?>', '')" style='color: #4B4B4B; font-weight: bold'><?php echo strtoupper($mesi[intval($mk)]) ?></a> (<a href="riepilogo_mensile.php?m=<?php echo $mk ?>&y=<?php echo $k ?>" style='color: #4B4B4B'>stampa riepilogo</a>)
-		</p>
-		<div class="link_cont" id="anno<?php echo $k ?>_mese<?php echo $mk ?>" style="display: none; margin-left: 15px">
-<?php 
-			foreach($month as $file){
-?>
-			<p class="doc_dw" style="line-height: 5px">
-				<span style=''><?php print truncateString($file['title'], 70) ?></span>
-			</p>
-<?php 
-			}
-?>
-		</div>
-<?php 
-		}
-?>
-<?php 
-	}
-?>
-	</div>
-<?php 
-}				
-else if(!isset($_REQUEST['month'])){
+if(!isset($_REQUEST['month'])){
 	$x = 1;
-	if (isset($_REQUEST['field']) && $_REQUEST['field'] == "categoria"){
-?>
-	<div style="width: 95%; margin-top: 5px; text-align: left">
-		<p style="font-weight: bold; font-ize: 1.1em">Categoria: <?php echo utf8_decode($categorie[$_REQUEST['param']]['nome']) ?></p>
-	</div>
-<?php
-	}
 	if ($res_docs->num_rows < 1){
 ?>
 	<div style="width: 95%; margin-top: 5px; border-bottom: 1px solid rgba(228, 228, 228, 1); text-align: center; border-radius: 10px 0px 0px 0px; ">
@@ -144,14 +136,25 @@ else if(!isset($_REQUEST['month'])){
 			//	$ab .= " - ".$doc['abstract'];
 			//}
 ?>
-					<div style="width: 95%; margin-top: 5px; border-bottom: 1px solid rgba(228, 228, 228, 1); border-radius: 10px 0px 0px 0px; <?php if($x%2) print('background-color: rgba(228, 228, 228, 0.3)') ?>">
-					<p style="height: 2px; font-size: 11px; text-transform: uppercase; margin-left: 10px"><?php if($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
-						<a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print $doc['id'] ?>" style="float: right">
+					<div style="width: 95%; height: 45px; margin-left: 2%; margin-top: 5px; color: #4B4B4B;
+					border-bottom: 1px
+					solid rgba(228, 228, 228,
+					1); border-radius: 10px 0 0 0; <?php if($x%2) print('background-color: rgba(242, 252, 253, .6)')
+                    ?>">
+					<p class="normal" style="height: 4px; font-size: 13px; text-transform: uppercase; margin-left:
+					10px"><?php if
+                        ($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
+						<a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
+                                $doc['id'] ?>" style="float: right; padding-top: 3px">
 							<img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
 						</a>
 					</p>
-					<p style="height: 2px; font-size: 10px; margin-left: 10px">Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?= $doc['owner'] ?></p>
-					<p style="height: 2px; font-size: 10px; margin-left: 10px">Tipologia: <span style="font-weight: bold"><?php echo utf8_decode($doc['nome']) ?></span></p>
+					<p style="height: 2px; font-size: 11px; margin-left: 10px">Pubblicato il <?php print format_date
+                        (substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?= $doc['owner'] ?></p>
+					<p style="height: 2px; font-size: 11px; margin-left: 10px">Tipologia: <span class="accent_color"
+                                                                                                style="font-weight:
+                                                                                                normal"><?php
+                            echo utf8_decode($doc['nome']) ?></span></p>
 					</div>
 <?php
 			$x++;
@@ -167,18 +170,6 @@ else{
 <?php
 	}
 	else{
-		if ($_SESSION['__user__'] && $_SESSION["__user__"]->check_perms(DSG_PERM)){
-?>
-				<div style="width: 95%; text-align: right; margin-right: 20px; padding-bottom: 20px">
-					<a href="riepilogo_mensile.php?m=<?php echo $_REQUEST['month'] ?>&y=<?php echo date("Y") ?>">Stampa riepilogo mensile</a>
-				</div>
-<?php
-		}
-?>
-		<div style="width: 95%; margin-top: 5px; text-align: left">
-					<p style="font-weight: bold; font-ize: 1.1em">Archivio mese di <?php echo $mesi[$_REQUEST['month']] ?></p>
-				</div>
-<?php
 		$x = 1;
 		while($doc = $res_docs->fetch_assoc()){
 			$fname = basename($doc['file']);
@@ -191,85 +182,71 @@ else{
 			//	$ab .= " - ".$doc['abstract'];
 			//}
 	?>
-				<div style="width: 95%; margin-top: 5px; border-bottom: 1px solid rgba(228, 228, 228, 1); border-radius: 10px 0px 0px 0px; <?php if($x%2) print('background-color: rgba(228, 228, 228, 0.3)') ?>">
-					<p style="height: 5px; font-size: 11px; text-transform: uppercase; margin-left: 10px"><?php if($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
-						<a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print $doc['id'] ?>" style="float: right">
-							<img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
-						</a>
-					</p>
-					<p style="height: 5px; font-size: 10px; margin-left: 10px">Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?= $doc['owner'] ?></p>
-					<p style="font-size: 10px; margin-left: 10px">Tipologia: <span style="font-weight: bold"><?php print $doc['nome'] ?></span></p>
-				</div>
+            <div style="width: 95%; height: 45px; margin-left: 2%; margin-top: 5px; color: #4B4B4B;
+					border-bottom: 1px
+					solid rgba(228, 228, 228,
+					1); border-radius: 10px 0 0 0; <?php if($x%2) print('background-color: rgba(242, 252, 253, .6)')
+            ?>">
+                <p class="normal" style="height: 4px; font-size: 13px; text-transform: uppercase; margin-left:
+					10px">
+                    <?php if ($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
+                    <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print $doc['id'] ?>" style="float: right; padding-top: 3px">
+                        <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
+                    </a>
+                </p>
+                <p style="height: 2px; font-size: 11px; margin-left: 10px">
+                    Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE,
+                            IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?php
+                    $doc['owner'] ?></p>
+                <p style="height: 2px; font-size: 11px; margin-left: 10px">Tipologia:
+                    <span class="accent_color" style="font-weight:
+                                                                                            normal">
+                        <?php echo utf8_decode($doc['nome']) ?>
+                    </span>
+                </p>
+            </div>
 <?php
 		$x++;
 		}
 	}
 }
 ?>
+        <p class="spacer"></p>
 			</div>
-			<div id="sidebar">
-				<div class="widget">
-					<h2>Categorie</h2>
-					<div class="contentarea">
-						<ul>
-						<?php 
-						foreach ($categorie as $cat){
-						?>
-							<li><a href="#" onclick="load(<?php echo $cat['id_categoria'] ?>, 'categoria',  false)" title="<?php echo $cat['descrizione'] ?>"><?php echo utf8_decode($cat['nome']) ?></a></li>
-						<?php } ?>	
-						</ul>
-					</div>
-				</div>
-				<div class="widget">
-					<h2>Archivio <?php echo date("Y") ?></h2>
-					<div class="contentarea">
-						<ul>
-					<?php 
-					$m = intval(date("m"));
-					while($m > 0){
-					?>
-							<li><a href="index.php?month=<?php echo $m ?>"><?php echo $mesi[$m] ?></a></li>
-					<?php 
-						$m--;
-					} 
-					?>
-							
-						</ul>
-					</div>
-				</div>
-				<div class="widget">
-					<h2>Archivio anni precedenti </h2>
-					<div class="contentarea">
-						<ul>
-							<?php
-							foreach ($archive as $old_year){
-							?>
-							<li><a href="archive.php?y=<?php echo $old_year ?>"><?php echo $old_year ?></a></li>
-							<?php
-							}
-							?>
-
-						</ul>
-					</div>
-				</div>
-			</div><!-- // end #sidebar -->
 		</div><!-- // end #main -->
-		<div id="footer">
-			<p>&copy; copyright <?php echo date("Y") ?> <a href="http://www.istitutoiglesiasserraperdosa.it">Istituto comprensivo "C. Nivola", Serra Perdosa - Iglesias</a> Tutti i diritti riservati </p>
-			
-			<!-- Please don't remove my backlink -->
-			<p>Free Web Design Templates by <a href="http://www.dkntemplates.com" title="Dkntemplates">Dkntemplates.com</a></p>
-			<!-- Please don't remove my backlink -->
-			
-		</div><!-- // end #footer -->
-	</div><!-- // end #container -->
-</div><!-- // end #wrapper -->
-<form method="post" id="search_form" action="index.php">
+<form method="post" id="search_form" action="index.php" style="display: none">
 	<input type="hidden" id="field" name="field" />
 	<input type="hidden" id="param" name="param" />
 	<input type="hidden" id="param_type" name="param_type" />
 </form>
 
-	
+<footer id="footer">
+    <span>Copyright <?php echo date("Y") ?> Riccardo Bachis | <a href="<?php print $_SESSION['__config__']['root_site'] ?>"><?php print $_SESSION['__config__']['intestazione_scuola'] ?></a></span>
+</footer>
+<div id="alert" class="alert_msg" style="display: none">
+    <div class="alert_title">
+        <i class="fa fa-thumbs-up"></i>
+        <span>Successo</span>
+    </div>
+    <p id="alertmessage" class="alertmessage"></p>
+</div>
+<div id="error" class="error_msg" style="display: none">
+    <div class="error_title">
+        <i class="fa fa-warning"></i>
+        <span>Errore</span>
+    </div>
+    <p class="errormessage" id="errormessage"></p>
+</div>
+<div id='background' class="alert_msg" style='display: none'>
+    <div class="alert_title">
+        <i class="fa fa-spin fa-circle-o-notch"></i>
+        <span>Attendi...</span>
+    </div>
+    <p id="background_msg" class="alertmessage"></p>
+</div>
+<div class="overlay" id="overlay" style="display:none;"></div>
 </body>
+<a href="#" id="top_btn" style="left: 70%" class="rb_button float_button top_button">
+    <i class="fa fa-arrow-up"></i>
+</a>
 </html>

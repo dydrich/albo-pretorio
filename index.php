@@ -88,7 +88,6 @@ $sel_archive = "SELECT SUBSTRING(data_upload, 1, 4) AS year FROM rb_documents WH
 $res_archive = $db->execute($sel_archive);
 $archive = array();
 while ($row = $res_archive->fetch_assoc()){
-	echo $row['year'];
 	if ($row['year'] != $year){
 		$archive[] = $row['year'];
 	}
@@ -104,6 +103,14 @@ while($cat = $res_cat->fetch_assoc()){
 $mesi = array("", "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre");
 
 setlocale(LC_TIME, "it_IT");
+
+$drawer_label = "Home page";
+if(isset($_REQUEST['field']) && $_REQUEST['field'] == 'categoria') {
+	$drawer_label = "Categoria: ".utf8_decode($categorie[$_REQUEST['param']]['nome']);
+}
+else if(isset($_REQUEST['month'])) {
+	$drawer_label = "Archivio mese di ".$mesi[$_REQUEST['month']];
+}
 
 $_SESSION['no_file'] = array("referer" => "albo/index.php", "path" => "", "relative" => "{$_SERVER['REQUEST_URI']}");
 
