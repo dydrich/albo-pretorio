@@ -106,7 +106,7 @@ setlocale(LC_TIME, "it_IT");
 
 $drawer_label = "Home page";
 if(isset($_REQUEST['field']) && $_REQUEST['field'] == 'categoria') {
-	$drawer_label = "Categoria: ".utf8_decode($categorie[$_REQUEST['param']]['nome']);
+	$drawer_label = "Categoria: ".$categorie[$_REQUEST['param']]['nome'];
 }
 else if(isset($_REQUEST['month'])) {
 	$drawer_label = "Archivio mese di ".$mesi[$_REQUEST['month']];

@@ -13,7 +13,30 @@
     <script type="text/javascript" src="../rclasse/js/jquery-ui-1.10.3.custom.min.js"></script>
     <script type="text/javascript" src="../rclasse/js/page.js"></script>
 	<script type="text/javascript">
+        $(function(){
+            load_jalert();
+            setOverlayEvent();
+            $('#top_btn').click(function() {
+                $('html,body').animate({
+                    scrollTop: 0
+                }, 700);
+                return false;
+            });
 
+            var amountScrolled = 200;
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > amountScrolled) {
+                    $('#plus_btn').fadeOut('slow');
+                    $('#float_btn').fadeIn('slow');
+                    $('#top_btn').fadeIn('slow');
+                } else {
+                    $('#float_btn').fadeOut('slow');
+                    $('#plus_btn').fadeIn();
+                    $('#top_btn').fadeOut('slow');
+                }
+            });
+        });
 	</script>
 </head>
 <body>
@@ -23,7 +46,11 @@
         <span style="position: relative; bottom: 5px">Albo pretorio on line</span>
     </div>
     <div id="sc_secondrow">
-        <span style="margin-left: 5px"><?php print $_SESSION['__config__']['intestazione_scuola'] ?></span>
+        <span style="margin-left: 5px">
+            <a href="http://www.istitutoiglesiasserraperdosa.it">
+                <?php print $_SESSION['__config__']['intestazione_scuola'] ?> - Iglesias
+            </a>
+        </span>
     </div>
 </header>
 <nav id="navigation">
@@ -87,28 +114,25 @@
 				//	$ab .= " - ".$doc['abstract'];
 				//}
 		?>
-                    <div style="width: 95%; height: 45px; margin-left: 2%; margin-top: 5px; color: #4B4B4B;
-					border-bottom: 1px
-					solid rgba(228, 228, 228,
-					1); border-radius: 10px 0 0 0; <?php if($x%2) print('background-color: rgba(242, 252, 253, .6)')
-                    ?>">
-                        <p class="normal" style="height: 4px; font-size: 13px; text-transform: uppercase; margin-left:
-					10px">
-                            <?php if ($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
-                            <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print $doc['id'] ?>" style="float: right; padding-top: 3px">
+                    <div class="albo_document <?php if($x%2) echo 'odd' ?>">
+                        <div class="normal albo_title fleft">
+                            <?php if($doc['titolo'] == "") print "Nessuna descrizione presente"; else print $ab ?>
+                        </div>
+                        <div class="fright" style="width: 5%">
+                            <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
+                                    $doc['id'] ?>" style="padding-top: 3px">
                                 <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
                             </a>
-                        </p>
-                        <p style="height: 2px; font-size: 11px; margin-left: 10px">
-                            Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE,
-                                    IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?php
-                            $doc['owner'] ?></p>
-                        <p style="height: 2px; font-size: 11px; margin-left: 10px">Tipologia:
-                    <span class="accent_color" style="font-weight:
-                                                                                            normal">
-                        <?php echo utf8_decode($doc['nome']) ?>
-                    </span>
-                        </p>
+                        </div>
+                        <div class="albo_data">
+                            <p class="albo_data_line">
+                                Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php
+                                print substr($doc['data_upload'], 11, 5) ?> da <?php echo $doc['owner'] ?>
+                            </p>
+                            <p class="albo_data_line">
+                                Tipologia: <span class="accent_color" style="font-weight: normal"><?php echo $doc['nome'] ?></span>
+                            </p>
+                        </div>
                     </div>
 		<?php
 				$x++;

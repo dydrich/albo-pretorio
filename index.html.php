@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias. <?php if (isset($_REQUEST['month'])) echo "Archivio mese di ".$mesi[$_REQUEST['month']] ?>" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias." />
     <meta name="keywords" content="Project Keywords" />
     <title>Albo pretorio</title>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
@@ -66,7 +66,11 @@
         <span style="position: relative; bottom: 5px">Albo pretorio on line</span>
     </div>
     <div id="sc_secondrow">
-        <span style="margin-left: 5px"><?php print $_SESSION['__config__']['intestazione_scuola'] ?></span>
+        <span style="margin-left: 5px">
+            <a href="http://www.istitutoiglesiasserraperdosa.it">
+                <?php print $_SESSION['__config__']['intestazione_scuola'] ?> - Iglesias
+            </a>
+        </span>
     </div>
 </header>
 <nav id="navigation">
@@ -86,7 +90,7 @@
                     <?php
                     foreach ($categorie as $cat){
                         ?>
-                        <li><a href="#" onclick="load(<?php echo $cat['id_categoria'] ?>, 'categoria',  false)" title="<?php echo $cat['descrizione'] ?>"><?php echo utf8_decode($cat['nome']) ?></a></li>
+                        <li><a href="#" onclick="load(<?php echo $cat['id_categoria'] ?>, 'categoria',  false)" title="<?php echo $cat['descrizione'] ?>"><?php echo $cat['nome'] ?></a></li>
                     <?php } ?>
                 </ul>
             <p class="menu_label classbook_icon">Archivio</p>
@@ -136,25 +140,25 @@ if(!isset($_REQUEST['month'])){
 			//	$ab .= " - ".$doc['abstract'];
 			//}
 ?>
-					<div style="width: 95%; height: 45px; margin-left: 2%; margin-top: 5px; color: #4B4B4B;
-					border-bottom: 1px
-					solid rgba(228, 228, 228,
-					1); border-radius: 10px 0 0 0; <?php if($x%2) print('background-color: rgba(242, 252, 253, .6)')
-                    ?>">
-					<p class="normal" style="height: 4px; font-size: 13px; text-transform: uppercase; margin-left:
-					10px"><?php if
-                        ($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
-						<a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
-                                $doc['id'] ?>" style="float: right; padding-top: 3px">
-							<img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
-						</a>
-					</p>
-					<p style="height: 2px; font-size: 11px; margin-left: 10px">Pubblicato il <?php print format_date
-                        (substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?= $doc['owner'] ?></p>
-					<p style="height: 2px; font-size: 11px; margin-left: 10px">Tipologia: <span class="accent_color"
-                                                                                                style="font-weight:
-                                                                                                normal"><?php
-                            echo utf8_decode($doc['nome']) ?></span></p>
+					<div class="albo_document <?php if($x%2) echo 'odd' ?>">
+					    <div class="normal albo_title fleft">
+                            <?php if($doc['titolo'] == "") print "Nessuna descrizione presente"; else print $ab ?>
+					    </div>
+                        <div class="fright" style="width: 5%">
+                            <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
+                                    $doc['id'] ?>" style="padding-top: 3px">
+                                <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
+                            </a>
+                        </div>
+                        <div class="albo_data">
+                            <p class="albo_data_line">
+                                Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php
+                                print substr($doc['data_upload'], 11, 5) ?> da <?php echo $doc['owner'] ?>
+                            </p>
+                            <p class="albo_data_line">
+                                Tipologia: <span class="accent_color" style="font-weight: normal"><?php echo $doc['nome'] ?></span>
+                            </p>
+                        </div>
 					</div>
 <?php
 			$x++;
@@ -182,28 +186,25 @@ else{
 			//	$ab .= " - ".$doc['abstract'];
 			//}
 	?>
-            <div style="width: 95%; height: 45px; margin-left: 2%; margin-top: 5px; color: #4B4B4B;
-					border-bottom: 1px
-					solid rgba(228, 228, 228,
-					1); border-radius: 10px 0 0 0; <?php if($x%2) print('background-color: rgba(242, 252, 253, .6)')
-            ?>">
-                <p class="normal" style="height: 4px; font-size: 13px; text-transform: uppercase; margin-left:
-					10px">
-                    <?php if ($doc['titolo'] == "") print "Nessuna descrizione presente"; else print truncateString($ab, 65) ?>
-                    <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print $doc['id'] ?>" style="float: right; padding-top: 3px">
+            <div class="albo_document <?php if($x%2) echo 'odd' ?>">
+                <div class="normal albo_title fleft">
+                    <?php if($doc['titolo'] == "") print "Nessuna descrizione presente"; else print $ab ?>
+                </div>
+                <div class="fright" style="width: 5%">
+                    <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
+                            $doc['id'] ?>" style="padding-top: 3px">
                         <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
                     </a>
-                </p>
-                <p style="height: 2px; font-size: 11px; margin-left: 10px">
-                    Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE,
-                            IT_DATE_STYLE, "/") ?> alle ore <?php print substr($doc['data_upload'], 11, 5) ?> da <?php
-                    $doc['owner'] ?></p>
-                <p style="height: 2px; font-size: 11px; margin-left: 10px">Tipologia:
-                    <span class="accent_color" style="font-weight:
-                                                                                            normal">
-                        <?php echo utf8_decode($doc['nome']) ?>
-                    </span>
-                </p>
+                </div>
+                <div class="albo_data">
+                    <p class="albo_data_line">
+                        Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php
+                        print substr($doc['data_upload'], 11, 5) ?> da <?php echo $doc['owner'] ?>
+                    </p>
+                    <p class="albo_data_line">
+                        Tipologia: <span class="accent_color" style="font-weight: normal"><?php echo $doc['nome'] ?></span>
+                    </p>
+                </div>
             </div>
 <?php
 		$x++;
