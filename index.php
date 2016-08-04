@@ -22,7 +22,12 @@ else
 $label = "Albo pretorio Online";
 $year = date("Y");
 
-$sel_docs = "SELECT rb_documents.*, rb_categorie_docs.nome, CONCAT_WS(' ', rb_utenti.nome, rb_utenti.cognome) AS owner FROM rb_documents, rb_categorie_docs, rb_utenti WHERE owner = uid AND rb_documents.categoria = rb_categorie_docs.id_categoria AND doc_type = 7  ";
+$sel_docs = "SELECT rb_documents.*, rb_categorie_docs.nome, CONCAT_WS(' ', rb_utenti.nome, rb_utenti.cognome) AS owner 
+			FROM rb_documents, rb_categorie_docs, rb_utenti 
+			WHERE owner = uid 
+			AND data_pubblicazione <= '".date('Y-m-d')."'
+			AND rb_documents.categoria = rb_categorie_docs.id_categoria 
+			AND doc_type = 7  ";
 if(isset($_REQUEST['field'])){
 	$sel_docs .= "AND ".$_REQUEST['field']." = ";
 	if($_REQUEST['param_type'] == "char")

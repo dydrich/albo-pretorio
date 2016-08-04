@@ -147,7 +147,7 @@ if(!isset($_REQUEST['month'])){
                         <div class="fright" style="width: 5%">
                             <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
                                     $doc['id'] ?>" style="padding-top: 3px">
-                                <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
+                                <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px; width: 25px" />
                             </a>
                         </div>
                         <div class="albo_data">
@@ -193,7 +193,7 @@ else{
                 <div class="fright" style="width: 5%">
                     <a href="../rclasse/modules/documents/download_manager.php?doc=document&id=<?php print
                             $doc['id'] ?>" style="padding-top: 3px">
-                        <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px" />
+                        <img src="../rclasse/images/mime/<?php echo $img ?>" style="margin-right: 5px; width: 25px" />
                     </a>
                 </div>
                 <div class="albo_data">
