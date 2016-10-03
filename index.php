@@ -59,7 +59,7 @@ switch($order){
 		break;
 	case PUB_SORT:
 	default:
-		$sel_docs .= "ORDER BY rb_documents.data_upload DESC";
+		$sel_docs .= "ORDER BY rb_documents.data_pubblicazione DESC";
 		break;
 }
 //print $sel_docs;

@@ -5,7 +5,7 @@
 	<meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias. <?php if (isset($_REQUEST['month'])) echo "Archivio mese di ".$mesi[$_REQUEST['month']] ?>" />
 	<meta name="keywords" content="Project Keywords" />
 	<title>Albo pretorio</title>
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../rclasse/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../rclasse/css/general.css" type="text/css" media="screen,projection" />
     <link href="../rclasse/css/site_themes/light_blue/reg.css" rel="stylesheet" type="text/css"/>
@@ -47,7 +47,7 @@
     </div>
     <div id="sc_secondrow">
         <span style="margin-left: 5px">
-            <a href="http://www.istitutoiglesiasserraperdosa.it">
+            <a href="https://www.istitutoiglesiasserraperdosa.gov.it">
                 <?php print $_SESSION['__config__']['intestazione_scuola'] ?> - Iglesias
             </a>
         </span>

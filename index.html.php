@@ -5,7 +5,7 @@
     <meta name="description" content="Albo pretorio ufficiale dell'Istituto comprensivo Nivola, di Serra Perdosa, a Iglesias." />
     <meta name="keywords" content="Project Keywords" />
     <title>Albo pretorio</title>
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../rclasse/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../rclasse/css/general.css" type="text/css" media="screen,projection" />
     <link href="../rclasse/css/site_themes/light_blue/reg.css" rel="stylesheet" type="text/css"/>
@@ -67,7 +67,7 @@
     </div>
     <div id="sc_secondrow">
         <span style="margin-left: 5px">
-            <a href="http://www.istitutoiglesiasserraperdosa.it">
+            <a href="https://www.istitutoiglesiasserraperdosa.gov.it">
                 <?php print $_SESSION['__config__']['intestazione_scuola'] ?> - Iglesias
             </a>
         </span>
@@ -136,9 +136,13 @@ if(!isset($_REQUEST['month'])){
 			$mime = MimeType::getMimeContentType($fname);
 			$img = $mime['image'];
 			$ab = $doc['titolo'];
-			//if ($doc['abstract'] != ""){
-			//	$ab .= " - ".$doc['abstract'];
-			//}
+			$upl_date = substr($doc['data_upload'], 0, 10);
+            $pub_date = $doc['data_pubblicazione'];
+            $publish_string = format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ." alle ore ".substr($doc['data_upload'],
+            11, 5);
+            if ($pub_date != $upl_date) {
+                $publish_string = format_date($doc['data_pubblicazione'], SQL_DATE_STYLE, IT_DATE_STYLE, "/") ." alle ore 00:00";
+            }
 ?>
 					<div class="albo_document <?php if($x%2) echo 'odd' ?>">
 					    <div class="normal albo_title fleft">
@@ -152,8 +156,7 @@ if(!isset($_REQUEST['month'])){
                         </div>
                         <div class="albo_data">
                             <p class="albo_data_line">
-                                Pubblicato il <?php print format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?> alle ore <?php
-                                print substr($doc['data_upload'], 11, 5) ?> da <?php echo $doc['owner'] ?>
+                                Pubblicato il <?php echo $publish_string ?> da <?php echo $doc['owner'] ?>
                             </p>
                             <p class="albo_data_line">
                                 Tipologia: <span class="accent_color" style="font-weight: normal"><?php echo $doc['nome'] ?></span>

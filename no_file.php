@@ -41,7 +41,7 @@ $drawer_label = "File non trovato";
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title><?php print $_SESSION['__config__']['intestazione_scuola'] ?>:: file non trovato</title>
     <link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../rclasse/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../rclasse/css/general.css" type="text/css" media="screen,projection" />
     <link href="../rclasse/css/site_themes/light_blue/reg.css" rel="stylesheet" type="text/css"/>
