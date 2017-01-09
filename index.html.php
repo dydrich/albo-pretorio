@@ -30,7 +30,7 @@
 
     $(function(){
         load_jalert();
-        setOverlayEvent();
+        //setOverlayEvent();
         $('#top_btn').click(function() {
             $('html,body').animate({
                 scrollTop: 0
